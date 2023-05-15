@@ -45,6 +45,7 @@ Shader "Custom/URPRefer"
                     float4 vertex            : POSITION;
                     float2 uv                : TEXCOORD0;
                     float3 normal            : NORMAL;
+                    float4 tangent           : TANGENT;
                 };
 
                 struct v2f
@@ -54,6 +55,8 @@ Shader "Custom/URPRefer"
                     float3 worldPos              : TEXCOORD1;
                     float4 worldNormal           : TEXCOORD2;
                     float4 screenPos             :TEXCOORD3;
+                    float3 worldTangent          : TEXCOORD4;
+                    float3 worldBitangent        : TEXCOORD5;
                 };
 
                 float4 TransformHClipToViewPortPos(float4 positionCS)
@@ -81,6 +84,8 @@ Shader "Custom/URPRefer"
                         o.worldNormal.xyz = TransformObjectToWorldNormal(v.normal);
                         o.worldNormal.w = ComputeFogFactor(o.vertex.z);
                         o.screenPos = ComputeScreenPos(o.vertex);
+                        o.worldTangent = normalize(mul(unity_ObjectToWorld, float4(v.tangent.xyz, 0)).xyz);
+                        o.worldBitangent = normalize(cross(o.worldNormal, o.worldTangent) * v.tangent.w);
                         return o;
                     }
 
