@@ -85,7 +85,7 @@ Shader "Custom/URPRefer"
                         o.worldNormal.w = ComputeFogFactor(o.vertex.z);
                         o.screenPos = ComputeScreenPos(o.vertex);
                         o.worldTangent = normalize(mul(unity_ObjectToWorld, float4(v.tangent.xyz, 0)).xyz);
-                        o.worldBitangent = normalize(cross(o.worldNormal, o.worldTangent) * v.tangent.w);
+                        o.worldBitangent = normalize(cross(o.worldNormal.xyz, o.worldTangent) * v.tangent.w);
                         return o;
                     }
 
